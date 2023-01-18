@@ -17,6 +17,17 @@ class Node {
   }
 }
 
+class Pair {
+
+  Node node;
+  int h;
+
+  public Pair(Node node_val, int h) {
+    this.h = h;
+    node = node_val;
+  }
+}
+
 class Binarytree {
 
   public Node root;
@@ -214,19 +225,159 @@ class Binarytree {
     return Math.max(ls, rs) + root.key;
   }
 
-  public static void main(String[] args) {
-    Binarytree tree = new Binarytree(3);
+  //for boundry traversal
 
-    tree.root.left = new Node(9);
-    tree.root.right = new Node(20);
-    tree.root.left.left = new Node(3);
-    tree.root.left.right = new Node(4);
-    tree.root.right.left = new Node(15);
-    tree.root.right.right = new Node(7);
-    tree.root.right.right.left = new Node(7);
-    tree.root.right.right.left.left = new Node(7);
-    tree.root.right.right.left.left.left = new Node(7);
-    tree.root.right.right.left.left.left.left = new Node(7);
+  //add left boundry--go left if no left go right
+  public static void addLeftBoundry(Node root, ArrayList<Integer> res) {
+    Node curr = root.left;
+    while (curr != null) {
+      if (curr.left != null || curr.right != null) { //not a leaf node
+        res.add(curr.key);
+      }
+      if (curr.left != null) {
+        curr = curr.left;
+      } else {
+        curr = curr.right;
+      }
+    }
+  }
+
+  //add right boundry --we just keep adding all right elements and if there are none right we add left to a new arraylist then we access the elements of array list from last  and  insert at these elements in arraylist to be returned. .
+  public static void addRightBoundry(Node root, ArrayList<Integer> res) {
+    Node curr = root.right;
+    ArrayList<Integer> temp = new ArrayList<Integer>();
+    while (curr != null) {
+      if (curr.left != null || curr.right != null) {
+        temp.add(curr.key);
+      }
+      if (curr.right != null) {
+        curr = curr.right;
+      } else {
+        curr = curr.left;
+      }
+    }
+    int i;
+    for (i = temp.size() - 1; i >= 0; --i) {
+      res.add(temp.get(i));
+    }
+  }
+
+  //if leaf node add to list,else go check for it's right and left part to be node
+  public static void addLeaves(Node root, ArrayList<Integer> res) {
+    if (root.left == null && root.right == null) {
+      res.add(root.key);
+      return;
+    }
+    if (root.left != null) {
+      addLeaves(root.left, res);
+    }
+    if (root.right != null) {
+      addLeaves(root.right, res);
+    }
+  }
+
+  public static ArrayList<Integer> printBoundry(Node node) {
+    ArrayList<Integer> ans = new ArrayList<Integer>();
+    //check if the given root was leaf node itself or not;
+    if (node.left == null && node.right == null) {
+      ans.add(node.key);
+    }
+    //real test begins here first add left boundry
+    addLeftBoundry(node, ans);
+    //add leaf nodes (of the bottom) function checks and add all leaf node starting form given root
+    addLeaves(node, ans);
+    addRightBoundry(node, ans);
+    return ans;
+  }
+
+  //for boundry traversal ^^^^^^^^^
+
+  //for top view
+  public static void topview(Node root) {
+    Queue<Pair> queue = new LinkedList<>();
+    queue.add(new Pair(root, 0));
+    Stack<Integer> leftstack = new Stack<>();
+    ArrayList<Integer> right = new ArrayList<>();
+    int hd = 0; //horizontal line
+    int l = 0;
+    int r = 0;
+    while (!queue.isEmpty()) {
+      Pair p = queue.peek();
+      //left part ma p.h is less than height so
+      if (p.h < l) {
+        leftstack.add(p.node.key);
+        l = p.h;
+      }
+      if (p.h > r) {
+        right.add(p.node.key);
+        r = p.h;
+      }
+      if (p.node.left != null) {
+        queue.add(new Pair(p.node.left, hd - 1));
+      }
+      if (p.node.right != null) {
+        queue.add(new Pair(p.node.right, hd + 1));
+      }
+      queue.poll();
+    }
+    while (!leftstack.isEmpty()) {
+      System.out.print(leftstack.peek() + " ");
+      leftstack.pop();
+    }
+
+    // then printing the root node's data
+    System.out.print(root.key + " ");
+
+    // finally printing the right node's data
+    for (int d : right) {
+      System.out.print(d + " ");
+    }
+  }
+
+  //root to leaf node
+  public static ArrayList<ArrayList<Integer>> Paths(Node root) {
+    // Code here
+    ArrayList<Integer> list = new ArrayList<>();
+    ArrayList<ArrayList<Integer>> ans = new ArrayList<>();
+    PathsHelper(root, list, ans);
+    return ans;
+  }
+
+  public static void PathsHelper(
+    Node root,
+    ArrayList<Integer> list,
+    ArrayList<ArrayList<Integer>> ans
+  ) {
+    if (root == null) {
+      return;
+    }
+    list.add(root.key);
+    if (root.right == null && root.left == null) {
+      // System.out.println(list);
+      ans.add(list);
+      list.clear();
+      return;
+    }
+    PathsHelper(root.left, list, ans);
+    PathsHelper(root.right, list, ans);
+  }
+
+  //root to leaf node
+
+  public static void main(String[] args) {
+    Binarytree tree = new Binarytree(1);
+    tree.root.left = new Node(2);
+    tree.root.right = new Node(3);
+    // tree.root.left = new Node(9);
+    // tree.root.right = new Node(20);
+    // tree.root.left.left = new Node(3);
+    // tree.root.left.right = new Node(4);
+    // tree.root.right.left = new Node(15);
+    // tree.root.right.right = new Node(7);
+    // tree.root.right.right.left = new Node(7);
+    // tree.root.right.right.left.left = new Node(7);
+    // tree.root.right.right.left.left.left = new Node(7);
+    // tree.root.right.right.left.left.left.left = new Node(7);
     // inordertraversal(tree.root);
     // levelordertraversal(tree.root, 3);
     // tree.queuelevelorder();
@@ -236,8 +387,12 @@ class Binarytree {
     // System.out.println(zigzagtraversal(tree.root));
     // System.out.println(checkbalanced(tree.root));
     // System.out.println(finddiameter(tree.root, 0));
-    int[] sum = new int[1];
-    System.out.println(findmaxsum(tree.root, sum));
+    // int[] sum = new int[1];
+    // System.out.println(findmaxsum(tree.root, sum));
+    // ArrayList<Integer>dummy=new ArrayList<>();
+    // System.out.println(printBoundry(tree.root));
+    // topview(tree.root);
+    System.out.println(Paths(tree.root));
 
     System.out.println("height of tree " + height(tree.root));
   }
