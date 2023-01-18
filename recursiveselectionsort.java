@@ -7,7 +7,7 @@ public class recursiveselectionsort {
       System.out.println(arr[i]);
     }
   }
-
+  //fdajflafkajfja
   public static void sort(int[] arr, int r, int c, int max) { //max as index
     if (r == 0) {
       return;
