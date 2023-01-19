@@ -334,16 +334,46 @@ class Binarytree {
     }
   }
 
-  //root to leaf node
-  public static ArrayList<ArrayList<Integer>> Paths(Node root) {
+  //root to  node
+  public boolean getPath(Node root, ArrayList<Integer> arr, int x) {
+    if (root == null) {
+      return false;
+    }
+    arr.add(root.key);
+    if (root.key == x) {
+      return true;
+    }
+    if (getPath(root.left, arr, x) || getPath(root.right, arr, x)) {
+      return true;
+    }
+    arr.remove(arr.size() - 1);
+    return false;
+  }
+
+  //root to leaf
+  public static void printRootTOLeafPaths(Node node, ArrayList<Integer> path) {
+    if (node == null) {
+      return;
+    }
+    path.add(node.key);
+    if (node.left == null && node.right == null) {
+      System.out.println(path);
+    }
+    printRootTOLeafPaths(node.left, path);
+    printRootTOLeafPaths(node.right, path);
+    path.remove(path.size() - 1);
+  }
+
+  public ArrayList<ArrayList<Integer>> Paths(Node root) {
     // Code here
-    ArrayList<Integer> list = new ArrayList<>();
     ArrayList<ArrayList<Integer>> ans = new ArrayList<>();
-    PathsHelper(root, list, ans);
+    ArrayList<Integer> list = new ArrayList<>();
+    addleaf(root, list, ans);
+    System.out.println(ans);
     return ans;
   }
 
-  public static void PathsHelper(
+  public void addleaf(
     Node root,
     ArrayList<Integer> list,
     ArrayList<ArrayList<Integer>> ans
@@ -353,16 +383,14 @@ class Binarytree {
     }
     list.add(root.key);
     if (root.right == null && root.left == null) {
-      // System.out.println(list);
       ans.add(list);
-      list.clear();
-      return;
     }
-    PathsHelper(root.left, list, ans);
-    PathsHelper(root.right, list, ans);
+    //if it is not leaf node we go first to left and check for root nodes ,we pass the same list as we need to keep adding
+    //once these recursion calls finish, it means we have found a leaf node thus we need to backtracck i.e remove the element we added in that recursion call so list gets emptied for other call
+    addleaf(root.left, list, ans);
+    addleaf(root.right, list, ans);
+    list.remove(list.size() - 1);
   }
-
-  //root to leaf node
 
   public static void main(String[] args) {
     Binarytree tree = new Binarytree(1);
@@ -392,8 +420,14 @@ class Binarytree {
     // ArrayList<Integer>dummy=new ArrayList<>();
     // System.out.println(printBoundry(tree.root));
     // topview(tree.root);
-    System.out.println(Paths(tree.root));
-
+    // // root to node samma print
+    // ArrayList<Integer> arr = new ArrayList<>();
+    // tree.getPath(tree.root, arr, 2);
+    // System.out.println(arr);
+    // ArrayList<Integer> toleaf = new ArrayList<>();
+    // printRootTOLeafPaths(tree.root, toleaf);
+    // System.out.println(Paths(tree.root));
+    System.out.println(tree.Paths(tree.root));
     System.out.println("height of tree " + height(tree.root));
   }
 }
