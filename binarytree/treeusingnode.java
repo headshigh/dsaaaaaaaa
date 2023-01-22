@@ -369,7 +369,6 @@ class Binarytree {
     ArrayList<ArrayList<Integer>> ans = new ArrayList<>();
     ArrayList<Integer> list = new ArrayList<>();
     addleaf(root, list, ans);
-    System.out.println(ans);
     return ans;
   }
 
@@ -383,7 +382,10 @@ class Binarytree {
     }
     list.add(root.key);
     if (root.right == null && root.left == null) {
-      ans.add(list);
+      System.out.println(list);
+      list.remove(list.size() - 1);
+      return;
+      // System.out.println(ans);
     }
     //if it is not leaf node we go first to left and check for root nodes ,we pass the same list as we need to keep adding
     //once these recursion calls finish, it means we have found a leaf node thus we need to backtracck i.e remove the element we added in that recursion call so list gets emptied for other call
@@ -394,18 +396,18 @@ class Binarytree {
 
   public static void main(String[] args) {
     Binarytree tree = new Binarytree(1);
-    tree.root.left = new Node(2);
-    tree.root.right = new Node(3);
-    // tree.root.left = new Node(9);
-    // tree.root.right = new Node(20);
-    // tree.root.left.left = new Node(3);
-    // tree.root.left.right = new Node(4);
-    // tree.root.right.left = new Node(15);
-    // tree.root.right.right = new Node(7);
-    // tree.root.right.right.left = new Node(7);
-    // tree.root.right.right.left.left = new Node(7);
-    // tree.root.right.right.left.left.left = new Node(7);
-    // tree.root.right.right.left.left.left.left = new Node(7);
+    // tree.root.left = new Node(2);
+    // tree.root.right = new Node(3);
+    tree.root.left = new Node(9);
+    tree.root.right = new Node(20);
+    tree.root.left.left = new Node(3);
+    tree.root.left.right = new Node(4);
+    tree.root.right.left = new Node(15);
+    tree.root.right.right = new Node(7);
+    tree.root.right.right.left = new Node(7);
+    tree.root.right.right.left.left = new Node(7);
+    tree.root.right.right.left.left.left = new Node(7);
+    tree.root.right.right.left.left.left.left = new Node(7);
     // inordertraversal(tree.root);
     // levelordertraversal(tree.root, 3);
     // tree.queuelevelorder();
