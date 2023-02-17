@@ -27,7 +27,6 @@ public class client {
       dout.writeUTF(input);
       String output = din.readUTF(); //server le send gareko lai receive garne
       System.out.println(output);
-      System.out.println(output);
       dout.close();
       din.close();
 
