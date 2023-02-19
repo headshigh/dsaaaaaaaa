@@ -18,13 +18,13 @@ public class client {
       String input = "";
       while (true) {
         System.out.println("Enter the String you wanted to check");
-        input = inputtaker.next();
+        input = inputtaker.nextLine();
+        dout.writeUTF(input);
         if (input.equalsIgnoreCase("exit")) {
           System.out.println("session terminated");
           break;
         }
       }
-      dout.writeUTF(input);
       String output = din.readUTF(); //server le send gareko lai receive garne
       System.out.println(output);
       dout.close();
