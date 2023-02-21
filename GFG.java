@@ -25,4 +25,3 @@ class GFG {
     towerOfHanoi(N, 'A', 'C', 'B');
   }
 }
-// This code is contributed by jyoti369

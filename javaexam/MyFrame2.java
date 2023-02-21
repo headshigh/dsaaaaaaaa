@@ -83,7 +83,7 @@ public class MyFrame2 extends JFrame {
 
     // create top box
     Box topBox = Box.createVerticalBox();
-    // topBox.setAlignmentX(CENTER_ALIGNMENT);
+    //
     topBox.add(new JButton("Button 1"));
     // topBox.add(Box.createHorizontalStrut(10)); // add some spacing
     topBox.add(new JButton("Button 2"));
