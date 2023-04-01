@@ -1,7 +1,5 @@
 import java.lang.reflect.Array;
-
 public class sodukusolver {
-
   public static void main(String[] args) {
     int[][] board = new int[][] {
       { 3, 0, 6, 5, 0, 8, 4, 0, 0 },
